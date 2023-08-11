@@ -6,12 +6,12 @@ import 'package:the_internet_folks/model/data.dart';
 import 'package:the_internet_folks/model/meta.dart';
 
 class Content {
-  List<Data> dataList;
-  Meta metadata;
+  List<Data>? dataList;
+  Meta? metadata;
 
   Content({
-    required this.dataList,
-    required this.metadata,
+    this.dataList,
+    this.metadata,
   });
 
   Content copyWith({
@@ -27,16 +27,22 @@ class Content {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'dataList': dataList.map((x) => x.toMap()).toList()});
-    result.addAll({'metadata': metadata.toMap()});
+    if (dataList != null) {
+      result.addAll({'dataList': dataList!.map((x) => x.toMap()).toList()});
+    }
+    if (metadata != null) {
+      result.addAll({'metadata': metadata!.toMap()});
+    }
 
     return result;
   }
 
   factory Content.fromMap(Map<String, dynamic> map) {
     return Content(
-      dataList: List<Data>.from(map['dataList']?.map((x) => Data.fromMap(x))),
-      metadata: Meta.fromMap(map['metadata']),
+      dataList: map['dataList'] != null
+          ? List<Data>.from(map['dataList']?.map((x) => Data.fromMap(x)))
+          : null,
+      metadata: map['metadata'] != null ? Meta.fromMap(map['metadata']) : null,
     );
   }
 

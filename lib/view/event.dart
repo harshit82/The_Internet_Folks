@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_internet_folks/constants.dart';
+import 'package:the_internet_folks/view_model/response_view_model.dart';
 import 'package:the_internet_folks/widgets/book_now_button.dart';
 import 'package:the_internet_folks/widgets/event_details.dart';
 
-class Event extends StatelessWidget {
-  final String eventName;
+class Event extends StatefulWidget {
+  final String viewName;
+  final int id;
 
-  const Event({
-    Key? key,
-    required this.eventName,
-  }) : super(key: key);
+  const Event({Key? key, required this.viewName, required this.id})
+      : super(key: key);
 
   @override
+  State<Event> createState() => _EventState();
+}
+
+class _EventState extends State<Event> {
+  @override
   Widget build(BuildContext context) {
+    final responseViewModel = context
+        .watch<ResponseViewModel>()
+        .response
+        .content!
+        .dataList?[widget.id];
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: BookButton(
@@ -34,9 +46,10 @@ class Event extends StatelessWidget {
           flexibleSpace: ClipRRect(
             borderRadius: const BorderRadius.only(),
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(sampleImage), // Replace with network image
+                  image:
+                      NetworkImage(responseViewModel!.banner_image.toString()),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -62,7 +75,7 @@ class Event extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  eventName == "" ? eventName : "Event Details",
+                  responseViewModel.title!,
                   maxLines: 2,
                   style: const TextStyle(
                     fontFamily: fontFamily,
@@ -71,21 +84,22 @@ class Event extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const EventDetails(
-                    imageUrl: "",
-                    name: "The Internet Folks",
+                EventDetails(
+                    imageUrl: responseViewModel.organizer_icon.toString(),
+                    name: responseViewModel.organizer_name.toString(),
                     designation: "Organizer"),
                 const SizedBox(height: 10),
-                const EventDetails(
+                EventDetails(
                   imageUrl: calendarIcon,
-                  name: "Date and Time",
+                  name: responseViewModel.date_time!,
                   designation: "dt",
                 ),
                 const SizedBox(height: 10),
-                const EventDetails(
+                EventDetails(
                   imageUrl: locationIcon,
-                  name: "Location",
-                  designation: "Address",
+                  name: responseViewModel.venue_name.toString(),
+                  designation:
+                      "${responseViewModel.venue_city} ${responseViewModel.venue_country}",
                 ),
                 const SizedBox(height: 10),
                 const Text(
@@ -96,8 +110,8 @@ class Event extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                const Expanded(
-                  child: Text(lorem),
+                Expanded(
+                  child: Text(responseViewModel.description.toString()),
                 ),
               ],
             ),

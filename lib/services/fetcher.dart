@@ -7,6 +7,7 @@ Future loadData(String url) async {
     if (response.statusCode == 200) {
       String responseBody = response.body;
       if (kDebugMode) {
+        print("Response body:");
         print(responseBody);
       }
       return responseBody;

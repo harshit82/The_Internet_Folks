@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:the_internet_folks/constants.dart';
 
 class EventCard extends StatelessWidget {
   final VoidCallback callback;
-  final String date;
-  final String time;
+  final String date_time;
   final String venue;
   final String eventName;
   final String imageUrl;
@@ -12,8 +12,7 @@ class EventCard extends StatelessWidget {
   const EventCard({
     Key? key,
     required this.callback,
-    required this.date,
-    required this.time,
+    required this.date_time,
     required this.venue,
     required this.eventName,
     required this.imageUrl,
@@ -63,7 +62,7 @@ class EventCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "$date $dot $time",
+                        date_time,
                         style: const TextStyle(
                           color: themeColor,
                           fontWeight: FontWeight.w600,
@@ -86,7 +85,7 @@ class EventCard extends StatelessWidget {
                             color: Color.fromRGBO(116, 118, 136, 100),
                           ),
                           Text(
-                            "$venue $dot rest of the venue",
+                            venue,
                             style: const TextStyle(
                                 color: Color.fromRGBO(116, 118, 136, 100)),
                           ),

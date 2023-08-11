@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 class Data {
-  int id;
-  String title;
-  String description;
-  String banner_image;
-  String date_time;
-  String organizer_name;
-  String organizer_icon;
-  String venue_name;
-  String venue_city;
-  String venue_country;
+  int? id;
+  String? title;
+  String? description;
+  String? banner_image;
+  String? date_time;
+  String? organizer_name;
+  String? organizer_icon;
+  String? venue_name;
+  String? venue_city;
+  String? venue_country;
 
   Data({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.banner_image,
-    required this.date_time,
-    required this.organizer_name,
-    required this.organizer_icon,
-    required this.venue_name,
-    required this.venue_city,
-    required this.venue_country,
+    this.id,
+    this.title,
+    this.description,
+    this.banner_image,
+    this.date_time,
+    this.organizer_name,
+    this.organizer_icon,
+    this.venue_name,
+    this.venue_city,
+    this.venue_country,
   });
 
   Data copyWith({
@@ -54,32 +54,52 @@ class Data {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
-    result.addAll({'title': title});
-    result.addAll({'description': description});
-    result.addAll({'banner_image': banner_image});
-    result.addAll({'date_time': date_time});
-    result.addAll({'organizer_name': organizer_name});
-    result.addAll({'organizer_icon': organizer_icon});
-    result.addAll({'venue_name': venue_name});
-    result.addAll({'venue_city': venue_city});
-    result.addAll({'venue_country': venue_country});
+    if (id != null) {
+      result.addAll({'id': id});
+    }
+    if (title != null) {
+      result.addAll({'title': title});
+    }
+    if (description != null) {
+      result.addAll({'description': description});
+    }
+    if (banner_image != null) {
+      result.addAll({'banner_image': banner_image});
+    }
+    if (date_time != null) {
+      result.addAll({'date_time': date_time});
+    }
+    if (organizer_name != null) {
+      result.addAll({'organizer_name': organizer_name});
+    }
+    if (organizer_icon != null) {
+      result.addAll({'organizer_icon': organizer_icon});
+    }
+    if (venue_name != null) {
+      result.addAll({'venue_name': venue_name});
+    }
+    if (venue_city != null) {
+      result.addAll({'venue_city': venue_city});
+    }
+    if (venue_country != null) {
+      result.addAll({'venue_country': venue_country});
+    }
 
     return result;
   }
 
   factory Data.fromMap(Map<String, dynamic> map) {
     return Data(
-      id: map['id']?.toInt() ?? 0,
-      title: map['title'] ?? '',
-      description: map['description'] ?? '',
-      banner_image: map['banner_image'] ?? '',
-      date_time: map['date_time'] ?? '',
-      organizer_name: map['organizer_name'] ?? '',
-      organizer_icon: map['organizer_icon'] ?? '',
-      venue_name: map['venue_name'] ?? '',
-      venue_city: map['venue_city'] ?? '',
-      venue_country: map['venue_country'] ?? '',
+      id: map['id']?.toInt(),
+      title: map['title'],
+      description: map['description'],
+      banner_image: map['banner_image'],
+      date_time: map['date_time'],
+      organizer_name: map['organizer_name'],
+      organizer_icon: map['organizer_icon'],
+      venue_name: map['venue_name'],
+      venue_city: map['venue_city'],
+      venue_country: map['venue_country'],
     );
   }
 

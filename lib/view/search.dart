@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:the_internet_folks/constants.dart';
+import 'package:the_internet_folks/view/event.dart';
 import 'package:the_internet_folks/widgets/event_card.dart';
 
+import '../view_model/response_view_model.dart';
+
 class Search extends StatefulWidget {
-  const Search({super.key});
+  final String viewName;
+
+  const Search({
+    Key? key,
+    required this.viewName,
+  }) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();
@@ -18,7 +28,9 @@ class _SearchState extends State<Search> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           title: const Text(
             "Search",
@@ -52,10 +64,14 @@ class _SearchState extends State<Search> {
                     Expanded(
                       child: TextField(
                         controller: searchController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.search),
+                          ),
                           border: InputBorder.none,
                           hintText: "Type Event Name",
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                               fontFamily: fontFamily,
                               color: Color.fromARGB(203, 158, 158, 158)),
                         ),
@@ -66,17 +82,29 @@ class _SearchState extends State<Search> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  EventCard(
-                    callback: () {},
-                    date: "",
-                    time: "",
-                    venue: "",
-                    eventName: "",
-                    imageUrl: '',
-                  ),
-                ],
+              child: Consumer<ResponseViewModel>(
+                builder: (context, value, child) {
+                  return ListView.builder(itemBuilder: (context, index) {
+                    return EventCard(
+                      callback: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                Event(viewName: 'Event', id: index)));
+                      },
+                      date_time: value
+                          .response.content!.dataList![index].date_time
+                          .toString(),
+                      venue:
+                          "${value.response.content!.dataList![index].venue_city} $dot ${value.response.content!.dataList![index].venue_country}",
+                      eventName: value
+                          .response.content!.dataList![index].venue_name
+                          .toString(),
+                      imageUrl: value
+                          .response.content!.dataList![index].banner_image
+                          .toString(),
+                    );
+                  });
+                },
               ),
             ),
           ],

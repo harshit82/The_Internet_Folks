@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:the_internet_folks/model/content.dart';
 
 class Response {
-  Content content;
-  bool status;
+  Content? content;
+  bool? status;
 
   Response({
-    required this.content,
-    required this.status,
+    this.content,
+    this.status,
   });
 
   Response copyWith({
@@ -24,20 +24,30 @@ class Response {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'content': content.toMap()});
-    result.addAll({'status': status});
+    if (content != null) {
+      result.addAll({'content': content!.toMap()});
+    }
+    if (status != null) {
+      result.addAll({'status': status});
+    }
 
     return result;
   }
 
   factory Response.fromMap(Map<String, dynamic> map) {
     return Response(
-      content: Content.fromMap(map['content']),
-      status: map['status'] ?? false,
+      content: map['content'] != null ? Content.fromMap(map['content']) : null,
+      status: map['status'],
     );
   }
 
   String toJson() => json.encode(toMap());
+
+  List<Response> listOfResponses(String source) {
+    return (json.decode(source) as List)
+        .map((i) => Response.fromJson(i))
+        .toList();
+  }
 
   factory Response.fromJson(String source) =>
       Response.fromMap(json.decode(source));

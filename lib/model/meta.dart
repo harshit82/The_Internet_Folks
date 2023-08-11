@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Meta {
-  int total;
+  int? total;
   Meta({
-    required this.total,
+    this.total,
   });
 
   Meta copyWith({
@@ -17,14 +17,16 @@ class Meta {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'total': total});
+    if (total != null) {
+      result.addAll({'total': total});
+    }
 
     return result;
   }
 
   factory Meta.fromMap(Map<String, dynamic> map) {
     return Meta(
-      total: map['total']?.toInt() ?? 0,
+      total: map['total']?.toInt(),
     );
   }
 

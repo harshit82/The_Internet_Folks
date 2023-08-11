@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:the_internet_folks/constants.dart';
 import 'package:the_internet_folks/view/event.dart';
 import 'package:the_internet_folks/view/home.dart';
 import 'package:the_internet_folks/view/search.dart';
+import 'package:the_internet_folks/view_model/response_view_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ResponseViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,13 +30,18 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: themeColor),
         useMaterial3: true,
       ),
-      initialRoute: '/event',
+      initialRoute: '/home',
       routes: {
-        '/home': (context) => const Home(),
-        '/event': (context) => const Event(
-              eventName: 'eve',
+        '/home': (context) => const Home(
+              viewName: "Home",
             ),
-        '/search': (context) => const Search(),
+        '/event': (context) => const Event(
+              viewName: "Event",
+              id: 0,
+            ),
+        '/search': (context) => const Search(
+              viewName: "Search",
+            ),
       },
     );
   }
